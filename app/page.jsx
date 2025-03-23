@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,19 @@ export default function BABON() {
   const [brandKit, setBrandKit] = useState("");
   const [marketingKit, setMarketingKit] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (!submitted) {
+      const script = document.createElement("script");
+      script.src = "https://www.paypal.com/sdk/js?client-id=BAAG1AlZ_Q6xs2F5yto8CuUvbG83TAUia7XzprbySnTFEBXCyfDni9rCqOpbuRg2kb5KIRDT_d5N-ZJTnM&components=hosted-buttons&enable-funding=venmo&currency=USD";
+      script.onload = () => {
+        window.paypal.HostedButtons({
+          hostedButtonId: "WU4R32EETBY98",
+        }).render("#paypal-container-WU4R32EETBY98");
+      };
+      document.body.appendChild(script);
+    }
+  }, [submitted]);
 
   const generateBABON = async () => {
     setSubmitted(true);
@@ -34,10 +47,6 @@ export default function BABON() {
       {!submitted && (
         <div className="mt-4">
           <div id="paypal-container-WU4R32EETBY98"></div>
-          <script src="https://www.paypal.com/sdk/js?client-id=BAAG1AlZ_Q6xs2F5yto8CuUvbG83TAUia7XzprbySnTFEBXCyfDni9rCqOpbuRg2kb5KIRDT_d5N-ZJTnM&components=hosted-buttons&enable-funding=venmo&currency=USD"></script>
-          <script>
-            {`paypal.HostedButtons({ hostedButtonId: "WU4R32EETBY98" }).render("#paypal-container-WU4R32EETBY98")`}
-          </script>
         </div>
       )}
 
